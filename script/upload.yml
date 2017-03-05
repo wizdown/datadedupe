@@ -7,12 +7,12 @@
     # inputfile will be given as input
     cur_dir: /home/abhishek/Desktop/major
     ##########################################################################
+
     metadata_dir: "{{cur_dir}}/temp_metadata"
     chunk_dir: "{{cur_dir}}/temp_chunk"
     script_dir: "{{cur_dir}}/script"
 
     chunk_size: 1024
-
 
     server_cur_dir: /root/major
     server_chunk_dir: "{{server_cur_dir}}/chunk"
@@ -50,21 +50,17 @@
     - debug: var=out.stdout_lines
       when: out.rc == 0
 
-    - fail:
-        msg: "Failed to generate Hashlist!"
-      when: out.rc !=0
-
     - name: preparing server
       file:
         path: "{{server_temp_metadata_dir}}"
         state: directory
         mode: 0755
 
-    - set_fact:
-        hashlist_src: "{{metadata_dir}}/{{inputfile}}.hashlist"
-    - set_fact:
-        hashlist_dest: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist"
     - name: Sending hashlist to server
       copy:
-        src: "{{hashlist_src}}"
-        dest: "{{hashlist_dest}}"
+        src: "{{metadata_dir}}/{{inputfile}}.hashlist"
+        dest: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist"
+
+    - local_action: file path="{{script_dir}}/ByteMergeAndSplit.class" state=absent
+
+    - local_action: file path="{{script_dir}}/hash.class" state=absent

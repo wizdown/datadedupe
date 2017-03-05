@@ -49,7 +49,6 @@ do
   chunk_name=${chunk_dir}/${chunk_name}
 
   hash_val=`java -classpath $script_dir hash $chunk_name`
-  echo "hash_val : $hash_val "
 
   echo $hash_val >> $hash_list
 
