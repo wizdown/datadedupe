@@ -67,10 +67,10 @@
         src: "{{metadata_dir}}/{{inputfile}}.hashlist"
         dest: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist"
 
-    # - name: Processing hashlist on server
-    #   script: srv_process_hashlist.sh {{inputfile}}
-    #   register: out
-    # - debug: var=out.stdout_lines
+    - name: Processing hashlist on server
+      script: test.sh {{inputfile}}
+      register: out
+    - debug: var=out.stdout_lines
 
 ###############################################################################
  # Tasks below are for cleanup
