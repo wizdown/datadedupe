@@ -24,6 +24,9 @@
     #- name: pinging server
     #  ping:
 
+###############################################################################
+# PREPARING LOCAL MACHINE
+
     - name: creating chunk directory
       local_action: file path={{chunk_dir}} state=directory
 
@@ -40,13 +43,16 @@
       register: out
     - debug: var=out.stdout_lines
 
+
+###############################################################################
+# PERFORMING TASKS
+
     - name: Splitting file into chunks
       local_action: shell java -classpath {{script_dir}} ByteMergeAndSplit split {{inputfile}} {{chunk_dir}} {{chunk_size}}
 
     - name: Generating hashlist of chunks
       local_action: script {{script_dir}}/generate_hashlist.sh {{inputfile}}
       register: out
-      ignore_errors: yes
     - debug: var=out.stdout_lines
       when: out.rc == 0
 
@@ -60,6 +66,14 @@
       copy:
         src: "{{metadata_dir}}/{{inputfile}}.hashlist"
         dest: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist"
+
+    # - name: Processing hashlist on server
+    #   script: srv_process_hashlist.sh {{inputfile}}
+    #   register: out
+    # - debug: var=out.stdout_lines
+
+###############################################################################
+ # Tasks below are for cleanup
 
     - local_action: file path="{{script_dir}}/ByteMergeAndSplit.class" state=absent
 
