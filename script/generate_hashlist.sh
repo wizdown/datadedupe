@@ -1,4 +1,9 @@
+##############################################################
+# change this path according to machine
 cur_dir=/home/abhishek/Desktop/major
+
+
+##############################################################
 
 script_dir=${cur_dir}/script
 chunk_dir=${cur_dir}/temp_chunk
