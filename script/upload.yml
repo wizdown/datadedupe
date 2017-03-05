@@ -1,0 +1,52 @@
+---
+- hosts: webserver
+  vars:
+    # inputfile will be given as input
+    server_cur_dir: /root/major
+    server_chunk_dir: /root/major/chunk
+    server_script_dir: /root/major/script
+    server_metadata_dir: /root/major/metadata
+
+    cur_dir: /home/abhishek/Desktop/major
+    chunk_dir: /home/abhishek/Desktop/major/chunk
+    script_dir: /home/abhishek/Desktop/major/script
+    chunk_size: 1024
+  tasks:
+    #- name: pinging server
+    #  ping:
+
+    - name: creating chunk directory
+      local_action: file path={{chunk_dir}} state=directory
+
+    - name: Compiling ByteMergeAndSplit.java
+      local_action: shell javac {{script_dir}}/ByteMergeAndSplit.java
+      register: out
+    - debug: var=out.stdout_lines
+
+    - name: Compiling hash.java
+      local_action: shell javac {{script_dir}}/hash.java
+      register: out
+    - debug: var=out.stdout_lines
+
+    - name: Splitting file into chunks
+      local_action: shell java -classpath {{script_dir}} ByteMergeAndSplit split {{inputfile}} {{chunk_dir}} {{chunk_size}}
+
+    - name: Generating hashlist of chunks
+      local_action: script {{script_dir}}/generate_hashlist.sh {{inputfile}}
+      register: out
+      ignore_errors: yes
+    - debug: var=out.stdout_lines
+      when: out.rc == 0
+
+    - fail:
+        msg: "Failed to generate Hashlist!"
+      when: out.rc !=0
+
+    - set_fact:
+        hashlist_src: "{{cur_dir}}/{{inputfile}}.hashlist"
+    - set_fact:
+        hashlist_dest: "{{server_cur_dir}}/{{inputfile}}.hashlist"
+    - name: Sending hashlist to server
+      copy:
+        src: "{{hashlist_src}}"
+        dest: "{{hashlist_dest}}"
