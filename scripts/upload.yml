@@ -1,0 +1,36 @@
+---
+- hosts: webserver
+  vars:
+    # inputfile will be given as input
+    chunk_dir: /home/abhishek/Desktop/major/chunk
+    scripts_path: /home/abhishek/Desktop/major/scripts
+    chunk_size: 1024
+  tasks:
+    #- name: pinging server
+    #  ping:
+
+    - name: creating chunk directory
+      local_action: file path={{chunk_dir}} state=directory
+
+    - name: Compiling ByteMergeAndSplit.java
+      local_action: shell javac {{scripts_path}}/ByteMergeAndSplit.java
+      register: out
+    - debug: var=out.stdout_lines
+
+    - name: Splitting file into chunks
+      local_action: shell java -classpath {{scripts_path}} ByteMergeAndSplit split {{inputfile}} {{chunk_dir}} {{chunk_size}}
+
+    - name: Compiling hash.java
+      local_action: shell javac {{scripts_path}}/hash.java
+      register: out
+    - debug: var=out.stdout_lines
+
+    - name: Generating hashlist of chunks
+      local_action: script {{scripts_path}}/generate_hashlist.sh
+      register: out
+    - debug: var=out.stdout_lines
+      when: out.rc == 0
+
+    - fail:
+        msg: "Failed to generate Hashlist!"
+      when: out.rc !=0
