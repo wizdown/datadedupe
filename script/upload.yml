@@ -6,9 +6,11 @@
     server_chunk_dir: /root/major/chunk
     server_script_dir: /root/major/script
     server_metadata_dir: /root/major/metadata
+    server_temp_metadata_dir: /root/major/temp_metadata
 
     cur_dir: /home/abhishek/Desktop/major
-    chunk_dir: /home/abhishek/Desktop/major/chunk
+    metadata_dir: /home/abhishek/Desktop/major/temp_metadata
+    chunk_dir: /home/abhishek/Desktop/major/temp_chunk
     script_dir: /home/abhishek/Desktop/major/script
     chunk_size: 1024
   tasks:
@@ -17,6 +19,9 @@
 
     - name: creating chunk directory
       local_action: file path={{chunk_dir}} state=directory
+
+    - name: creating metadata directory
+      local_action: file path={{metadata_dir}} state=directory
 
     - name: Compiling ByteMergeAndSplit.java
       local_action: shell javac {{script_dir}}/ByteMergeAndSplit.java
@@ -42,10 +47,16 @@
         msg: "Failed to generate Hashlist!"
       when: out.rc !=0
 
+    - name: preparing server
+      file:
+        path: "{{server_temp_metadata_dir}}"
+        state: directory
+        mode: 0755
+
     - set_fact:
-        hashlist_src: "{{cur_dir}}/{{inputfile}}.hashlist"
+        hashlist_src: "{{metadata_dir}}/{{inputfile}}.hashlist"
     - set_fact:
-        hashlist_dest: "{{server_cur_dir}}/{{inputfile}}.hashlist"
+        hashlist_dest: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist"
     - name: Sending hashlist to server
       copy:
         src: "{{hashlist_src}}"

@@ -1,6 +1,9 @@
-script_dir=/home/abhishek/Desktop/major/script
-chunk_dir=/home/abhishek/Desktop/major/chunk
 cur_dir=/home/abhishek/Desktop/major
+
+script_dir=${cur_dir}/script
+chunk_dir=${cur_dir}/temp_chunk
+metadata_dir=${cur_dir}/temp_metadata
+
 
 if [ ! -d $chunk_dir ]
 then
@@ -15,8 +18,8 @@ then
 fi
 
 inputfile=$1
-hash_list=${cur_dir}/${inputfile}.hashlist
-chunk_list=${cur_dir}/${inputfile}.chunklist
+hash_list=${metadata_dir}/${inputfile}.hashlist
+chunk_list=${metadata_dir}/${inputfile}.chunklist
 
 if [ -f $hash_list ]
 then
@@ -41,6 +44,7 @@ do
   chunk_name=${chunk_dir}/${chunk_name}
 
   hash_val=`java -classpath $script_dir hash $chunk_name`
+  echo "hash_val : $hash_val "
 
   echo $hash_val >> $hash_list
 
