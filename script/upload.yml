@@ -74,6 +74,7 @@
       fetch:
        src: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist.old"
        dest: "{{metadata_dir}}/{{inputfile}}.hashlist.old"
+       flat: yes
 
 ###############################################################################
  # Tasks below are for cleanup
