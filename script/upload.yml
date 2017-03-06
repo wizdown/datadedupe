@@ -52,7 +52,6 @@
       local_action: script {{script_dir}}/generate_hashlist.sh {{inputfile}}
       register: out
     - debug: var=out.stdout_lines
-      when: out.rc == 0
 
 
     - name: Sending hashlist to server

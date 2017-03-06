@@ -2,12 +2,16 @@
 # change this path according to machine
 cur_dir=/home/abhishek/Desktop/major
 
-
 ##############################################################
 
 script_dir=${cur_dir}/script
 chunk_dir=${cur_dir}/temp_chunk
 metadata_dir=${cur_dir}/temp_metadata
+
+echo "cur_dir: $cur_dir "
+echo "script_dir : $script_dir"
+echo "chunk_dir : $chunk_dir"
+echo "metadata_dir : $metadata_dir"
 
 
 if [ ! -d $chunk_dir ]
