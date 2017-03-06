@@ -53,13 +53,16 @@ fi
 
 
 hashlist=$1
-echo "PARAMS : $1"
-echo "hashlist var : $hashlist"
-hashlist=${server_temp_metadata_dir}/${inputfile}".hashlist"
-echo "Editted hashlist var : $hashlist"
+# echo "PARAMS : $1"
+# echo "hashlist var : $hashlist"
+hashlist="${server_temp_metadata_dir}/${hashlist}.hashlist"
+# echo "Editted hashlist var : $hashlist"
 
-new_chunk_file=${server_temp_metadata_dir}/${hashlist}.new
-old_chunk_file=${server_temp_metadata_dir}/${hashlist}.old
+new_chunk_file="${hashlist}.new"
+old_chunk_file="${hashlist}.old"
+
+# echo "new file : $new_chunk_file"
+# echo "old file : $new_chunk_file"
 
 if [ -f $new_chunk_file ]
 then
