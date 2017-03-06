@@ -86,6 +86,16 @@
       register: out
     - debug: var=out.stdout_lines
 
+    - name: Fetching list of new chunks
+      fetch:
+       src: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist.new"
+       dest: "{{metadata_dir}}/{{inputfile}}.hashlist.new"
+
+    - name: Fetching list of old chunks
+      fetch:
+       src: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist.old"
+       dest: "{{metadata_dir}}/{{inputfile}}.hashlist.old"
+
 ###############################################################################
  # Tasks below are for cleanup
 

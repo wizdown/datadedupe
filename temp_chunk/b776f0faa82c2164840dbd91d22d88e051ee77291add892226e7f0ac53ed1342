@@ -1,0 +1,6 @@
+1) Pass extra variables  
+ansible-playbook release.yml --extra-vars "version=1.23.45 other_variable=foo"
+
+2) scp
+scp your_username@remotehost.edu:foobar.txt /local/dir
+
