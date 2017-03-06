@@ -65,6 +65,12 @@
       register: out
     - debug: var=out.stdout_lines
 
+    # - name: Transfer file from ServerA to ServerB
+    #   synchronize:
+    #     src: "{{server_temp_metadata_dir}}"
+    #     dest: "{{metadata_dir}}"
+    #   delegate_to: webserver
+
     - name: Fetching list of new chunks
       fetch:
        src: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist.new"
