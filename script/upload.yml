@@ -1,29 +1,9 @@
 ---
 - hosts: webserver
-  vars:
-
-    ###########################################################################
-    # The following variables depend on local machine. DEFINE THEM
-    # inputfile will be given as input
-    cur_dir: /home/abhishek/Desktop/major
-    ##########################################################################
-
-    metadata_dir: "{{cur_dir}}/temp_metadata"
-    chunk_dir: "{{cur_dir}}/temp_chunk"
-    script_dir: "{{cur_dir}}/script"
-
-    chunk_size: 1024
-
-    server_cur_dir: /root/major
-    server_chunk_dir: "{{server_cur_dir}}/chunk"
-    server_metadata_dir: "{{server_cur_dir}}/metadata"
-    server_temp_metadata_dir: "{{server_cur_dir}}/temp_metadata"
-
+  vars_files:
+  - vars.yml
 
   tasks:
-    #- name: pinging server
-    #  ping:
-
 ###############################################################################
 # PREPARING LOCAL MACHINE
 
