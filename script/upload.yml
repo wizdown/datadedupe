@@ -27,19 +27,37 @@
 ###############################################################################
 # PREPARING LOCAL MACHINE
 
-    - name: creating chunk directory
+    - name: preparing server
+      file:
+        path: "{{server_temp_metadata_dir}}"
+        state: directory
+        mode: 0755
+
+    - file:
+        path: "{{server_cur_dir}}"
+        state: directory
+        mode: 0755
+
+    - file:
+        path: "{{server_chunk_dir}}"
+        state: directory
+        mode: 0755
+
+    - file:
+        path: "{{server_metadata_dir}}"
+        state: directory
+        mode: 0755
+
+    - name: Preparing local machine
       local_action: file path={{chunk_dir}} state=directory
 
-    - name: creating metadata directory
-      local_action: file path={{metadata_dir}} state=directory
+    - local_action: file path={{metadata_dir}} state=directory
 
-    - name: Compiling ByteMergeAndSplit.java
-      local_action: shell javac {{script_dir}}/ByteMergeAndSplit.java
+    - local_action: shell javac {{script_dir}}/ByteMergeAndSplit.java
       register: out
     - debug: var=out.stdout_lines
 
-    - name: Compiling hash.java
-      local_action: shell javac {{script_dir}}/hash.java
+    - local_action: shell javac {{script_dir}}/hash.java
       register: out
     - debug: var=out.stdout_lines
 
@@ -56,11 +74,6 @@
     - debug: var=out.stdout_lines
       when: out.rc == 0
 
-    - name: preparing server
-      file:
-        path: "{{server_temp_metadata_dir}}"
-        state: directory
-        mode: 0755
 
     - name: Sending hashlist to server
       copy:
