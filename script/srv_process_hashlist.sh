@@ -25,7 +25,7 @@ function verify_hash {
   if [ ! -f $hash_freq_map ]
   then
         echo 1
-	return 1
+	      return 1
   fi
 
   cut -d':' -f1 $hash_freq_map | grep -w $key
@@ -53,7 +53,8 @@ fi
 
 
 hashlist=$1
-hashlist=${server_temp_metadata_dir}/${inputfile}
+hashlist=${server_temp_metadata_dir}/${inputfile}.hashlist
+echo $hashlist
 
 new_chunk_file=${server_temp_metadata_dir}/${hashlist}.new
 old_chunk_file=${server_temp_metadata_dir}/${hashlist}.old

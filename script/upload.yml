@@ -68,7 +68,7 @@
         dest: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist"
 
     - name: Processing hashlist on server
-      script: test.sh {{inputfile}}
+      script: srv_process_hashlist.sh --some-arguments "{{inputfile}}"
       register: out
     - debug: var=out.stdout_lines
 
