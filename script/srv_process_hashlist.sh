@@ -1,4 +1,8 @@
+##############################################################
+# change this path according to machine
 server_cur_dir=/root/major
+
+##############################################################
 
 
 server_chunk_dir=${server_cur_dir}/chunk
@@ -28,7 +32,7 @@ function verify_hash {
 	      return 1
   fi
 
-  cut -d':' -f1 $hash_freq_map | grep -w $key
+  cut -d':' -f1 $hash_freq_map | grep -w $key 1> /dev/null 2> /dev/null
 
   if [ $? -eq 0 ]
   then
@@ -81,7 +85,9 @@ while [ $hash_no -le $total_hash ]
 do
 
   hash_name=`sed -n "${hash_no}p" $hashlist`
+  # echo "DEBUG: hashname to be verified => $hash_name"
   status=`verify_hash $hash_name`
+  # echo "DEBUG: Status => $status"
   if [ $status -eq 0 ]
   then
     echo $hash_name >> $old_chunk_file

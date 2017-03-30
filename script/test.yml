@@ -1,0 +1,13 @@
+---
+- hosts: webserver
+  tasks:
+###############################################################################
+# COPYING FILES
+
+    - name: Copying Files
+      copy:
+        src: "{{item}}"
+        dest: "/root/ansible_test"
+        owner: "root"
+      with_fileglob:
+        - "/home/abhishek/Desktop/major/script/*"

@@ -75,12 +75,19 @@
       fetch:
        src: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist.new"
        dest: "{{metadata_dir}}/{{inputfile}}.hashlist.new"
+       flat: yes
 
     - name: Fetching list of old chunks
       fetch:
        src: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist.old"
        dest: "{{metadata_dir}}/{{inputfile}}.hashlist.old"
        flat: yes
+
+    - name: Deleting duplicate chunks from local machine
+      local_action: script {{script_dir}}/delete_duplicate_chunks.sh {{inputfile}}
+      register: out
+
+    - debug: var=out.stdout_lines
 
 ###############################################################################
  # Tasks below are for cleanup
