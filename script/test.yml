@@ -10,4 +10,4 @@
         dest: "/root/ansible_test"
         owner: "root"
       with_fileglob:
-        - "/home/abhishek/Desktop/major/script/*"
+        - "/home/abhishek/Desktop/major/empty_dir/*"

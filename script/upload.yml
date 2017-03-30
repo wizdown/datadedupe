@@ -89,8 +89,18 @@
 
     - debug: var=out.stdout_lines
 
+    - name: Copying new chunks to server
+      copy:
+       src: "{{item}}"
+       dest: "{{server_chunk_dir}}"
+       owner: "root"
+      with_fileglob:
+      - "{{chunk_dir}}/*"
+
 ###############################################################################
  # Tasks below are for cleanup
+
+    - local_action: file path="{{metadata_dir}}" state=absent
 
     - local_action: file path="{{script_dir}}/ByteMergeAndSplit.class" state=absent
 
