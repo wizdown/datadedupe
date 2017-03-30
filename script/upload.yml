@@ -5,10 +5,14 @@
 
   tasks:
 ###############################################################################
-# PREPARING LOCAL MACHINE
+# PREPARING LOCAL MACHINE AND SERVER
 
-    - name: preparing server
+    - name: Setting up!
       file:
+        path: "{{server_temp_metadata_dir}}"
+        state: absent
+
+    -  file:
         path: "{{server_temp_metadata_dir}}"
         state: directory
         mode: 0755
@@ -27,6 +31,17 @@
         path: "{{server_metadata_dir}}"
         state: directory
         mode: 0755
+
+    - file:
+        path: "{{hash_freq_map}}"
+        state: touch
+        mode: 0755
+
+    - file:
+        path: "{{server_metadata_dir_files}}"
+        state: directory
+        mode: 0755
+
 
     - name: Preparing local machine
       local_action: file path={{chunk_dir}} state=directory
@@ -65,17 +80,11 @@
       register: out
     - debug: var=out.stdout_lines
 
-    # - name: Transfer file from ServerA to ServerB
-    #   synchronize:
-    #     src: "{{server_temp_metadata_dir}}"
-    #     dest: "{{metadata_dir}}"
-    #   delegate_to: webserver
-
-    - name: Fetching list of new chunks
-      fetch:
-       src: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist.new"
-       dest: "{{metadata_dir}}/{{inputfile}}.hashlist.new"
-       flat: yes
+    # - name: Fetching list of new chunks
+    #   fetch:
+    #    src: "{{server_temp_metadata_dir}}/{{inputfile}}.hashlist.new"
+    #    dest: "{{metadata_dir}}/{{inputfile}}.hashlist.new"
+    #    flat: yes
 
     - name: Fetching list of old chunks
       fetch:
@@ -97,10 +106,21 @@
       with_fileglob:
       - "{{chunk_dir}}/*"
 
+    # The path below is NOT ABSOLUTE . Its RELATIVE.
+    - name: Alter metadata at server
+      script: alter_metadata.sh {{inputfile}}
+      register: out
+
+    - debug: var=out.stdout_lines
+
+    # Add code to handle errors
+
 ###############################################################################
  # Tasks below are for cleanup
 
     - local_action: file path="{{metadata_dir}}" state=absent
+
+    - local_action: file path="{{chunk_dir}}" state=absent
 
     - local_action: file path="{{script_dir}}/ByteMergeAndSplit.class" state=absent
 

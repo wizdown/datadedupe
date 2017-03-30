@@ -6,7 +6,6 @@ server_cur_dir=/root/major
 
 
 server_chunk_dir=${server_cur_dir}/chunk
-server_script_dir=${server_cur_dir}/script
 server_metadata_dir=${server_cur_dir}/metadata
 hash_freq_map=${server_metadata_dir}/hash_freq.list
 server_temp_metadata_dir=${server_cur_dir}/temp_metadata

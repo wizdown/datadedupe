@@ -14,4 +14,6 @@ chunk_size: 1024
 server_cur_dir: "/root/major"
 server_chunk_dir: "{{server_cur_dir}}/chunk"
 server_metadata_dir: "{{server_cur_dir}}/metadata"
+server_metadata_dir_files: "{{server_cur_dir}}/metadata/files"
 server_temp_metadata_dir: "{{server_cur_dir}}/temp_metadata"
+hash_freq_map: "{{server_metadata_dir}}/hash_freq.list"

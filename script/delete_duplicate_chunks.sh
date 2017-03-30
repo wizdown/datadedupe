@@ -18,8 +18,6 @@ server_temp_metadata_dir=${server_cur_dir}/temp_metadata
 chunk_dir=${cur_dir}/temp_chunk
 metadata_dir=${cur_dir}/temp_metadata
 
-# /home/abhishek/Desktop/major/temp_metadata/notes.hashlist.new/139.59.46.90/root/major/temp_metadata
-
 old_chunk_list=${metadata_dir}/${inputfile}.hashlist.old
 
 if [ -f $old_chunk_list ]
