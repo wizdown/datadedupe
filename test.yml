@@ -1,9 +1,0 @@
----
-- hosts: webserver
-  vars:
-    input: hey
-  tasks:
-    - name: Processing hashlist on server
-      script: test.sh "{{input}}"
-      register: out
-    - debug: var=out.stdout_lines
