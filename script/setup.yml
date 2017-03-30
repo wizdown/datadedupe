@@ -1,0 +1,35 @@
+---
+- hosts: webserver
+  vars_files:
+  - vars.yml
+
+  tasks:
+###############################################################################
+# PREPARING  SERVER
+
+    - name: Preparing Server
+
+    - file:
+        path: "{{server_cur_dir}}"
+        state: directory
+        mode: 0755
+
+    - file:
+        path: "{{server_chunk_dir}}"
+        state: directory
+        mode: 0755
+
+    - file:
+        path: "{{server_metadata_dir}}"
+        state: directory
+        mode: 0755
+
+    - file:
+        path: "{{hash_freq_map}}"
+        state: touch
+        mode: 0755
+
+    - file:
+        path: "{{server_metadata_dir_files}}"
+        state: directory
+        mode: 0755

@@ -4,10 +4,25 @@
   - vars.yml
 
   tasks:
-###############################################################################
-# PREPARING LOCAL MACHINE AND SERVER
 
-    - name: Setting up!
+###############################################################################
+# CHECK IF FILE ALREADY EXISTS
+    - name: Check if file already exists
+      stat:
+        path: "{{server_metadata_dir_files}}/{{inputfile}}"
+      register: status
+
+    - fail:
+        msg: "File with a similar name already exists. Please rename your file and try again!"
+      when: status.stat.isreg is defined and status.stat.isreg
+
+
+
+
+###############################################################################
+# PREPARING  SERVER
+
+    - name: Preparing Server
       file:
         path: "{{server_temp_metadata_dir}}"
         state: absent
@@ -17,31 +32,38 @@
         state: directory
         mode: 0755
 
-    - file:
-        path: "{{server_cur_dir}}"
-        state: directory
-        mode: 0755
 
-    - file:
-        path: "{{server_chunk_dir}}"
-        state: directory
-        mode: 0755
+# The tasks just below are needed only when setting up server.
+# They have been done separately in setup.yml.
+# WARNING: execute setup.yml before running any other function
 
-    - file:
-        path: "{{server_metadata_dir}}"
-        state: directory
-        mode: 0755
+    # - file:
+    #     path: "{{server_cur_dir}}"
+    #     state: directory
+    #     mode: 0755
+    #
+    # - file:
+    #     path: "{{server_chunk_dir}}"
+    #     state: directory
+    #     mode: 0755
+    #
+    # - file:
+    #     path: "{{server_metadata_dir}}"
+    #     state: directory
+    #     mode: 0755
+    #
+    # - file:
+    #     path: "{{hash_freq_map}}"
+    #     state: touch
+    #     mode: 0755
+    #
+    # - file:
+    #     path: "{{server_metadata_dir_files}}"
+    #     state: directory
+    #     mode: 0755
 
-    - file:
-        path: "{{hash_freq_map}}"
-        state: touch
-        mode: 0755
-
-    - file:
-        path: "{{server_metadata_dir_files}}"
-        state: directory
-        mode: 0755
-
+###############################################################################
+# PREPARING  LOCAL MACHINE (specific to current upload task only)
 
     - name: Preparing local machine
       local_action: file path={{chunk_dir}} state=directory

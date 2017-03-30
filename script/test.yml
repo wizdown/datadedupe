@@ -4,10 +4,14 @@
 ###############################################################################
 # COPYING FILES
 
-    - name: Copying Files
-      copy:
-        src: "{{item}}"
-        dest: "/root/ansible_test"
-        owner: "root"
-      with_fileglob:
-        - "/home/abhishek/Desktop/major/empty_dir/*"
+    - name: Check if file exists
+      stat:
+        path: /root/sample.tx
+      register: p
+
+    - debug:
+        msg: "Path exists and is a File"
+      when: p.stat.isreg is defined and p.stat.isreg
+    - debug:
+        msg: "Path doesn't exist"
+      when: p.stat.isreg is not defined
