@@ -7,6 +7,7 @@
 
 ###############################################################################
 # CHECK IF FILE ALREADY EXISTS
+
     - name: Check if file already exists
       stat:
         path: "{{server_metadata_dir_files}}/{{inputfile}}"
@@ -15,9 +16,6 @@
     - fail:
         msg: "File with a similar name already exists. Please rename your file and try again!"
       when: status.stat.isreg is defined and status.stat.isreg
-
-
-
 
 ###############################################################################
 # PREPARING  SERVER
