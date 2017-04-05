@@ -6,6 +6,20 @@
   tasks:
 
 ###############################################################################
+    # CHECK IF FILE EXISTS IN CURRENT FOLDER
+
+    - name: Check if file exists in {{cur_dir}}
+      local_action: stat path="{{cur_dir}}/{{inputfile}}"
+      register: p
+    - debug:
+        msg: "File exists!"
+      when: p.stat.isreg is defined and p.stat.isreg
+      
+    - fail:
+        msg: "File not found on local machine. Please move file to {{cur_dir}} !"
+      when: p.stat.isreg is not defined
+
+###############################################################################
 # CHECK IF FILE ALREADY EXISTS ON SERVER
 
     - name: Check if file already exists
@@ -18,6 +32,7 @@
       when: status.stat.isreg is defined and status.stat.isreg
 
 ###############################################################################
+
 # PREPARING  SERVER
 
     - name: Preparing Server
