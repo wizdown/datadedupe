@@ -8,8 +8,7 @@
 # PREPARING  SERVER
 
     - name: Preparing Server
-
-    - file:
+      file:
         path: "{{server_cur_dir}}"
         state: directory
         mode: 0755

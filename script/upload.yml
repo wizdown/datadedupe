@@ -6,7 +6,7 @@
   tasks:
 
 ###############################################################################
-# CHECK IF FILE ALREADY EXISTS
+# CHECK IF FILE ALREADY EXISTS ON SERVER
 
     - name: Check if file already exists
       stat:
@@ -139,6 +139,10 @@
  # Tasks below are for cleanup
 
     - local_action: file path="{{metadata_dir}}" state=absent
+
+    - file:
+       path: "{{server_temp_metadata_dir}}"
+       state: absent
 
     - local_action: file path="{{chunk_dir}}" state=absent
 

@@ -18,9 +18,14 @@
       when: status.stat.isreg is not defined
 
 ###############################################################################
-
-    - debug:
-        msg: "File found!"
+# FILE FOUND. NOW REMOVING IT'S CHUNKS AND METADATA
+    # - debug:
+    #     msg: "File found!"
 
     - name: Removing chunks and metadata for given file
       script: srv_delete_file.sh {{inputfile}}
+      register: out
+    - debug: var=out.stdout_lines
+
+    - debug:
+        msg: "File removed from cloud!"
