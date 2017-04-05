@@ -1,0 +1,26 @@
+---
+- hosts: webserver
+  vars_files:
+  - vars.yml
+
+  tasks:
+
+###############################################################################
+# CHECK IF FILE EXISTS OR NOT
+
+    - name: Check if file exists
+      stat:
+        path: "{{server_metadata_dir_files}}/{{inputfile}}"
+      register: status
+
+    - fail:
+        msg: "ERROR => File doesn't exist!"
+      when: status.stat.isreg is not defined
+
+###############################################################################
+
+    - debug:
+        msg: "File found!"
+
+    - name: Removing chunks and metadata for given file
+      script: srv_delete_file.sh {{inputfile}}
