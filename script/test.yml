@@ -1,16 +1,22 @@
 ---
 - hosts: webserver
+  vars_files:
+  - vars.yml
   tasks:
 ###############################################################################
 # COPYING FILES
 
-    - name: Check if file exists
-      local_action: stat path="~/Desktop/major/notes1"
-      register: p
-
-    - debug:
-        msg: "Path exists and is a File"
-      when: p.stat.isreg is defined and p.stat.isreg
-    - debug:
-        msg: "Path doesn't exist"
-      when: p.stat.isreg is not defined
+    # - name: Check if file exists
+    #   local_action: stat path="~/Desktop/major/notes1"
+    #   register: p
+    #
+    # - debug:
+    #     msg: "Path exists and is a File"
+    #   when: p.stat.isreg is defined and p.stat.isreg
+    # - debug:
+    #     msg: "Path doesn't exist"
+    #   when: p.stat.isreg is not defined
+    - name: Fetching list of FILES
+      shell: ls {{server_metadata_dir_files}}
+      register: out
+    - debug: var=out.stdout_lines

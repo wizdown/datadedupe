@@ -1,0 +1,11 @@
+---
+- hosts: webserver
+  vars_files:
+  - vars.yml
+  tasks:
+###############################################################################
+
+    - name: Fetching list of FILES
+      shell: ls {{server_metadata_dir_files}}
+      register: out
+    - debug: var=out.stdout_lines
