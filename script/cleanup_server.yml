@@ -1,0 +1,13 @@
+---
+- hosts: webserver
+  vars_files:
+  - vars.yml
+
+  tasks:
+###############################################################################
+# PREPARING  SERVER
+
+    - name: Cleaning Server
+      file:
+        path: "{{server_cur_dir}}"
+        state: absent
