@@ -14,7 +14,7 @@
     - debug:
         msg: "File exists!"
       when: p.stat.isreg is defined and p.stat.isreg
-      
+
     - fail:
         msg: "File not found on local machine. Please move file to {{cur_dir}} !"
       when: p.stat.isreg is not defined
