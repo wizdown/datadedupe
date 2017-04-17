@@ -45,36 +45,6 @@
         state: directory
         mode: 0755
 
-
-# The tasks just below are needed only when setting up server.
-# They have been done separately in setup.yml.
-# WARNING: execute setup.yml before running any other function
-
-    # - file:
-    #     path: "{{server_cur_dir}}"
-    #     state: directory
-    #     mode: 0755
-    #
-    # - file:
-    #     path: "{{server_chunk_dir}}"
-    #     state: directory
-    #     mode: 0755
-    #
-    # - file:
-    #     path: "{{server_metadata_dir}}"
-    #     state: directory
-    #     mode: 0755
-    #
-    # - file:
-    #     path: "{{hash_freq_map}}"
-    #     state: touch
-    #     mode: 0755
-    #
-    # - file:
-    #     path: "{{server_metadata_dir_files}}"
-    #     state: directory
-    #     mode: 0755
-
 ###############################################################################
 # PREPARING  LOCAL MACHINE (specific to current upload task only)
 
@@ -143,7 +113,7 @@
 
     # The path below is NOT ABSOLUTE . Its RELATIVE.
     - name: Alter metadata at server
-      script: alter_metadata.sh {{inputfile}}
+      script: srv_alter_metadata.sh {{inputfile}}
       register: out
 
     - debug: var=out.stdout_lines
