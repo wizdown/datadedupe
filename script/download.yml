@@ -1,0 +1,86 @@
+---
+- hosts: webserver
+  vars_files:
+  - vars.yml
+
+  tasks:
+
+###############################################################################
+    # CHECK IF FILE EXISTS IN CURRENT FOLDER
+
+    - name: Check if file with similar name exists in {{cur_dir}}
+      local_action: stat path="{{cur_dir}}/{{inputfile}}"
+      register: p
+    - fail:
+        msg: "File with similar name exists in {{cur_dir}} . Please remove it and try again!"
+      when: p.stat.isreg is defined and p.stat.isreg
+
+###############################################################################
+# CHECK IF FILE ALREADY EXISTS ON SERVER
+
+    - name: Check if file already exists
+      stat:
+        path: "{{server_metadata_dir_files}}/{{inputfile}}"
+      register: status
+
+    - fail:
+        msg: "ERROR: Requested file does not exists on server!"
+      when: status.stat.isreg is not defined.
+
+    - debug:
+        msg: "File found. Downloading now!"
+      when: status.stat.isreg is defined and status.stat.isreg
+
+
+###############################################################################
+
+# PREPARING  SERVER
+
+    - name: Preparing Server
+      file:
+        path: "{{server_temp_metadata_dir}}"
+        state: absent
+
+    -  file:
+        path: "{{server_temp_metadata_dir}}"
+        state: directory
+        mode: 0755
+
+    -  file:
+        path: "{{server_temp_metadata_chunk}}"
+        state: directory
+        mode: 0755
+
+###############################################################################
+# PREPARING  LOCAL MACHINE (specific to current upload task only)
+
+    - local_action: shell javac {{script_dir}}/ByteMergeAndSplit.java
+      register: out
+    - debug: var=out.stdout_lines
+
+
+###############################################################################
+# PERFORMING TASKS
+    - name: Generating requested file!
+      script: srv_download_file.sh {{inputfile}}
+
+    - copy:
+        src: "{{script_dir}}/ByteMergeAndSplit.class"
+        dest: "{{server_temp_metadata_dir}}/ByteMergeAndSplit.class"
+
+    - shell: java -classpath {{server_temp_metadata_dir}} ByteMergeAndSplit merge {{server_temp_metadata_chunk}} {{server_temp_metadata_dir}}/{{inputfile}} `ls {{server_temp_metadata_chunk}}`
+
+    - name: Rquested file ready. Fetching!
+      fetch:
+        src: "{{server_temp_metadata_dir}}/{{inputfile}}"
+        dest: "{{cur_dir}}/{{inputfile}}"
+        flat: yes
+
+###############################################################################
+ # Tasks below are for cleanup
+
+    - file:
+       path: "{{server_temp_metadata_dir}}"
+       state: absent
+
+    - local_action: file path="{{script_dir}}/ByteMergeAndSplit.class" state=absent

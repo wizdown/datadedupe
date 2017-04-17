@@ -16,7 +16,12 @@
     # - debug:
     #     msg: "Path doesn't exist"
     #   when: p.stat.isreg is not defined
-    - name: Fetching list of FILES
-      shell: ls {{server_metadata_dir_files}}
+    # - name: Fetching list of FILES
+    #   shell: ls {{server_metadata_dir_files}}
+    #   register: out
+    # - debug: var=out.stdout_lines
+    - name: Run sample script
+      shell: java -classpath {{Sample `ls {{server_cur_dir}}`
       register: out
+
     - debug: var=out.stdout_lines

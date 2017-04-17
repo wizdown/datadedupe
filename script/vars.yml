@@ -9,7 +9,7 @@ chunk_dir: "{{cur_dir}}/temp_chunk"
 script_dir: "{{cur_dir}}/script"
 
 # the variable chunk_size will not be needed for variable_chunking algorithm
-chunk_size: 1024
+chunk_size: 300
 
 server_cur_dir: "/root/major"
 server_chunk_dir: "{{server_cur_dir}}/chunk"
@@ -17,3 +17,5 @@ server_metadata_dir: "{{server_cur_dir}}/metadata"
 server_metadata_dir_files: "{{server_metadata_dir}}/files"
 server_temp_metadata_dir: "{{server_cur_dir}}/temp_metadata"
 hash_freq_map: "{{server_metadata_dir}}/hash_freq.list"
+
+server_temp_metadata_chunk: "{{server_temp_metadata_dir}}/chunk"
