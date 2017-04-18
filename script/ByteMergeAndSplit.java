@@ -111,7 +111,7 @@ public class ByteMergeAndSplit{
 		Command for execution
 		1) java ByteMergeAndSplit split [source-file] [destination-folder(without / at end)] [chunk-size]
 
-		2) java ByteMergeAndSplit merge [source-folder] [path+newfilename] [list of pieces in order]
+		2) java ByteMergeAndSplit merge [source-folder]/ [path+newfilename] [list of pieces in order]
 		*/
 
 		ByteMergeAndSplit obj = new ByteMergeAndSplit();
@@ -122,6 +122,9 @@ public class ByteMergeAndSplit{
 				nameList = obj.readAndFragment(args[1],args[2],Integer.parseInt(args[3]));
 
 			}else{
+
+				// System.out.println("Arguments received : " + args.length ) ;
+
 				ArrayList<String> nameList2 = new ArrayList<String>();
 				for(int i = 3 ; i < args.length ; i++)
 					nameList2.add(args[i]);
