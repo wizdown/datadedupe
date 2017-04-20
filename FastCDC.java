@@ -96,54 +96,70 @@ public class FastCDC {
 					if(bytesRemaining <= min)
 					{
 						store= new byte[bytesRemaining];
-                                                inStream.read(store,0,min);
+                                                inStream.read(store,0,bytesRemaining);
                                                 break;
 					}
 					else
                                         {
-                                        int end=max;
+                                            int end=max;
                                             if(bytesRemaining > min && bytesRemaining <=max) end=bytesRemaining;
-                                        temporary = new byte[end];
-					int bytesRead = inStream.read(temporary,0,min);
-					for(int i=0;i<end-min;i++)
-                                        {
-                                            byte[] b=new byte[1];
-                                            bytesRead++;
-                                            inStream.read(b,0,1);
-                                            temporary[min+i]=b[0];
-                                            int a=(int)b[0];
-                                            a=a & 0xFF;
+                                            temporary = new byte[end];
+                                            int bytesRead = inStream.read(temporary,0,min);
+                                            for(int i=0;i<end-min;i++)
+                                            {
+                                             byte[] b=new byte[1];
+                                             bytesRead++;
+                                             inStream.read(b,0,1);
+                                             temporary[min+i]=b[0];
+                                             int a=(int)b[0];
+                                             a=a & 0xFF;
                                            // System.out.println(a);
-                                            hash=hash.multiply(BigInteger.valueOf(2));
-                                            hash=hash.add(BigInteger.valueOf(G[(int)a]));
-                                            hash=hash.mod(modu);
-                                            BigInteger temp;
-                                            if(min+i <= normal)
+                                             hash=hash.multiply(BigInteger.valueOf(2));
+                                             hash=hash.add(BigInteger.valueOf(G[(int)a]));
+                                             hash=hash.mod(modu);
+                                             BigInteger temp;
+                                             if(min+i <= normal)
                                                 temp=hash.and(BigInteger.valueOf(maskS));
-                                            else
+                                             else
                                                 temp=hash.and(BigInteger.valueOf(maskL));
                                            // System.out.println(temp);
-                                            if(temp.equals(BigInteger.valueOf(0)))
-                                            {
+                                              if(temp.equals(BigInteger.valueOf(0)))
+                                              {
                                                 count++;
-                                                store= new byte[min+i];
-                                                for(int j=0;j<min+i;j++)    
+                                                store= new byte[min+i+1];
+                                                for(int j=0;j<=min+i;j++)    
                                                     store[j]=temporary[j];
                                                 break;
+                                              }
                                             }
-                                        }
-                                        if(bytesRead==end)
-                                        {store=temporary;System.out.println(NUMBER_OF_CHUNKS);}
-                                        if(bytesRead > 0 )
-					{
+                                            if(bytesRead==end)
+                                                {store=temporary;System.out.println(NUMBER_OF_CHUNKS);}
+                                            if(bytesRead > 0 )
+                                            {
 						totalBytesRead += bytesRead ;
 						NUMBER_OF_CHUNKS++ ;
-					}
+                                            }   
                                         }
                                         
-                                        
-					write(store,destination +"/" + PART_NAME);
-					nameList.add(destination+"/"+PART_NAME);
+                                        if(store.length==max)
+                                        {
+                                            NUMBER_OF_CHUNKS--;
+                                            byte []temp=new byte[normal];
+                                            for(int i=0;i<(max/normal);i++)
+                                            {
+                                                PART_NAME=NUMBER_OF_CHUNKS +".chunk";
+                                                for(int j=0;j<normal;j++)
+                                                 temp[j]=store[i*normal + j];
+                                                write(temp,destination +"/" + PART_NAME);
+                                                nameList.add(destination+"/"+PART_NAME);
+                                                NUMBER_OF_CHUNKS++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            write(store,destination +"/" + PART_NAME);
+                                            nameList.add(destination+"/"+PART_NAME);
+                                        }
 					//System.out.println("Total Chunks : " + NUMBER_OF_CHUNKS);
 
 				}
@@ -194,7 +210,7 @@ public class FastCDC {
 
 		/*
 		Command for execution
-		1) java ByteMergeAndSplit split [source-file] [destination-folder(without / at end)] [masklength] [maxsize] [minsize] [normal]
+		1) java ByteMergeAndSplit split [source-file] [destination-folder(without / at end)]
 		2) java ByteMergeAndSplit merge [source-folder] [path+newfilename] [list of pieces in order]
 		*/
 
@@ -202,13 +218,11 @@ public class FastCDC {
 		try{
 			if(args[0].equals("split"))
 			{
-                                int len=Integer.parseInt(args[3]);
-                                int a=Integer.parseInt(args[4]);
-                                int b=Integer.parseInt(args[5]);
-                                int c=Integer.parseInt(args[6]);
                                 
-                                FastCDC obj = new FastCDC(len,a,b,c);
+                                
+                                FastCDC obj = new FastCDC(48,65536,2048,8192);
 				nameList = obj.readAndFragment(args[1],args[2]);
+                               //obj.mergeParts(nameList,"","F:\\High\\TestFile4.WEBM");
 
 			}else{
 				ArrayList<String> nameList2 = new ArrayList<String>();
