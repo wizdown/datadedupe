@@ -18,18 +18,18 @@
 ###############################################################################
 # CHECK IF FILE ALREADY EXISTS ON SERVER
 
-    # - name: Check if file already exists
-    #   stat:
-    #     path: "{{server_metadata_dir_files}}/{{inputfile}}"
-    #   register: status
-    #
-    # - fail:
-    #     msg: "ERROR: Requested file does not exists on server!"
-    #   when: status.stat.isreg is not defined.
-    #
-    # - debug:
-    #     msg: "File found. Downloading now!"
-    #   when: status.stat.isreg is defined and status.stat.isreg
+    - name: Check if file already exists
+      stat:
+        path: "{{server_metadata_dir_files}}/{{inputfile}}"
+      register: status
+
+    - fail:
+        msg: "ERROR: Requested file does not exist on server!"
+      when: status.stat.isreg is not defined
+
+    - debug:
+        msg: "File found. Downloading now!"
+      when: status.stat.isreg is defined and status.stat.isreg
 
 
 ###############################################################################
@@ -55,8 +55,8 @@
 # PREPARING  LOCAL MACHINE (specific to current upload task only)
 
     - local_action: shell javac {{script_dir}}/ByteMergeAndSplit.java
-      register: out
-    - debug: var=out.stdout_lines
+  #    register: out
+  #  - debug: var=out.stdout_lines
 
 
 ###############################################################################
@@ -69,11 +69,11 @@
         dest: "{{server_temp_metadata_dir}}/ByteMergeAndSplit.class"
 
     - shell: java -classpath {{server_temp_metadata_dir}} ByteMergeAndSplit merge {{server_temp_metadata_chunk}}/ {{server_temp_metadata_dir}}/{{inputfile}} `cat {{server_metadata_dir_files}}/{{inputfile}} | tr -s '\n' ' ' `
-      # register: out
+    # register: out
 
     # - debug: var=out.stdout_lines
 
-    - name: Rquested file ready. Fetching!
+    - name: Requested file ready. Fetching!
       fetch:
         src: "{{server_temp_metadata_dir}}/{{inputfile}}"
         dest: "{{cur_dir}}/{{inputfile}}"

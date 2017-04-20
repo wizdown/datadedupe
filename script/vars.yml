@@ -12,6 +12,7 @@ script_dir: "{{cur_dir}}/script"
 chunk_size: 300
 
 server_cur_dir: "/root/major"
+
 server_chunk_dir: "{{server_cur_dir}}/chunk"
 server_metadata_dir: "{{server_cur_dir}}/metadata"
 server_metadata_dir_files: "{{server_metadata_dir}}/files"
