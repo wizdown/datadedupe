@@ -53,7 +53,7 @@
 
     - local_action: file path={{metadata_dir}} state=directory
 
-    - local_action: shell javac {{script_dir}}/ByteMergeAndSplit.java
+    - local_action: shell javac {{script_dir}}/FastCDC.java
       register: out
     - debug: var=out.stdout_lines
 
@@ -66,7 +66,7 @@
 # PERFORMING TASKS
 
     - name: Splitting file into chunks
-      local_action: shell java -classpath {{script_dir}} ByteMergeAndSplit split {{inputfile}} {{chunk_dir}} {{chunk_size}}
+      local_action: shell java -classpath {{script_dir}} FastCDC split {{inputfile}} {{chunk_dir}}
 
     - name: Generating hashlist of chunks
       local_action: script {{script_dir}}/generate_hashlist.sh {{inputfile}}
@@ -131,6 +131,6 @@
 
     - local_action: file path="{{chunk_dir}}" state=absent
 
-    - local_action: file path="{{script_dir}}/ByteMergeAndSplit.class" state=absent
+    - local_action: file path="{{script_dir}}/FastCDC.class" state=absent
 
     - local_action: file path="{{script_dir}}/hash.class" state=absent

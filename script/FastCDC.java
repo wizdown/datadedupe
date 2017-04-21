@@ -3,8 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fastcdc;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -218,8 +216,6 @@ public class FastCDC {
 		try{
 			if(args[0].equals("split"))
 			{
-
-
                                 FastCDC obj = new FastCDC(48,65536,2048,8192);
 				nameList = obj.readAndFragment(args[1],args[2]);
                                //obj.mergeParts(nameList,"","F:\\High\\TestFile4.WEBM");
