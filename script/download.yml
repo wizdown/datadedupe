@@ -82,8 +82,8 @@
 ###############################################################################
  # Tasks below are for cleanup
 
-    # - file:
-    #    path: "{{server_temp_metadata_dir}}"
-    #    state: absent
+    - file:
+       path: "{{server_temp_metadata_dir}}"
+       state: absent
 
     - local_action: file path="{{script_dir}}/ByteMergeAndSplit.class" state=absent
