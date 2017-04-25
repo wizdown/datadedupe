@@ -14,6 +14,8 @@ sudo apt-get install vim
 ssh-keygen -t rsa -N "passkey" -f path_of_file_with_its_name -q
 
 5) make sure ~/.ssh dir is created
+mkdir ~/.ssh
+
 move private key to ~/.ssh/id_rsa    (id_rsa is filename not directory name)
 and public key to ~/.ssh/authrised_keys  on server (authrised_keys is filename not directory name)
 
@@ -21,7 +23,7 @@ and public key to ~/.ssh/authrised_keys  on server (authrised_keys is filename n
 ssh root@server_ip
 
 7) replace hosts file at /etc/ansible/hosts
-and put server ip
+and put server ip and passkey(if changed)
 
 8) Execute the following commands
 ssh-agent bash
