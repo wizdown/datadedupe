@@ -54,6 +54,8 @@ do
 
   hash_val=`java -classpath $script_dir hash $chunk_name`
 
+  echo $hash_val
+  
   echo $hash_val >> $hash_list
 
   new_name=${chunk_dir}/${hash_val}

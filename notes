@@ -9,3 +9,15 @@ ls -l temp_metadata | grep "^d" | tr -s " " | cut -d' ' -f9
 
 4) Command to generate ssh keys without user input
 ssh-keygen -t rsa -N "passkey" -f "path_of_file_with_its_name" -q 
+
+5) Command to list all files
+ansible-playbook script/display_all_files.yml
+
+6) command to upload file
+ansible-playbook script/upload.yml --extra-vars="inputfile=filename"
+
+7) command to download file 
+ansible-playbook script/download.yml --extra-vars="inputfile=filename"
+
+8) command to delete file
+ansible-playbook script/delete.yml --extra-vars="inputfile=filename"
