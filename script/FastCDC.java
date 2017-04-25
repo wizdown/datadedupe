@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fastcdc;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -46,7 +45,7 @@ public class FastCDC {
         len=n;
         G=new long [256];
         byte []data = new  byte [8];
-         FileInputStream fis = new FileInputStream(new File("C:\\Users\\gurleen\\Documents\\NetBeansProjects\\FastCDC\\src\\fastcdc\\block01.txt"));
+         FileInputStream fis = new FileInputStream(new File("block01.txt"));
         for(int i=0;i<256;i++)
         {
             fis.read(data, 0, 8);
@@ -96,7 +95,7 @@ public class FastCDC {
 					if(bytesRemaining <= min)
 					{
 						store= new byte[bytesRemaining];
-                                                bytesRead=inStream.read(store,0,bytesRemaining);       
+                                                bytesRead=inStream.read(store,0,bytesRemaining);
 					}
 					else
                                         {
@@ -124,12 +123,12 @@ public class FastCDC {
                                               if(temp.equals(BigInteger.valueOf(0)))
                                               {
                                                 store= new byte[min+i+1];
-                                                for(int j=0;j<=min+i;j++)    
+                                                for(int j=0;j<=min+i;j++)
                                                     store[j]=temporary[j];
                                                 break;
                                               }
                                             }
-                                               
+
                                         }
                                        totalBytesRead += bytesRead ;
                                         if(bytesRead==end)
@@ -211,8 +210,8 @@ public class FastCDC {
 		try{
 			if(args[0].equals("split"))
 			{
-                                
-                                
+
+
                                 FastCDC obj = new FastCDC(48,65536,2048,8192);
 				nameList = obj.readAndFragment(args[1],args[2]);
                                //obj.mergeParts(nameList,"","F:\\High\\TestFile4.WEBM");
@@ -230,4 +229,3 @@ public class FastCDC {
 
 	}
 }
-
