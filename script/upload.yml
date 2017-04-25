@@ -49,7 +49,11 @@
 # PREPARING  LOCAL MACHINE (specific to current upload task only)
 
     - name: Preparing local machine
-      local_action: file path={{chunk_dir}} state=directory
+      local_action: file path={{chunk_dir}} state=absent
+
+    - local_action: file path={{chunk_dir}} state=directory
+
+    - local_action: file path={{metadata_dir}} state=absent
 
     - local_action: file path={{metadata_dir}} state=directory
 
