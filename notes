@@ -7,3 +7,5 @@ scp your_username@remotehost.edu:foobar.txt /local/dir
 3) get the name of only directory in a folder.(useful in extracting content of data fetched from remote host
 ls -l temp_metadata | grep "^d" | tr -s " " | cut -d' ' -f9
 
+4) Command to generate ssh keys without user input
+ssh-keygen -t rsa -N "passkey" -f "path_of_file_with_its_name" -q 
