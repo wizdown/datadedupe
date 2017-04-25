@@ -85,31 +85,29 @@ public class FastCDC {
                 byte[] store = null;
 		try{
 			InputStream inStream = null;
-			int totalBytesRead = 0 ;
+			int totalBytesRead = 0,bytesRemaining,bytesRead=0,end=0;
 			try{
 				inStream = new BufferedInputStream ( new FileInputStream(willBeRead));
 				while(totalBytesRead < FILE_SIZE)
 				{
                                         BigInteger hash=BigInteger.valueOf(0);
 					String PART_NAME=NUMBER_OF_CHUNKS +".chunk";
-					int bytesRemaining = FILE_SIZE - totalBytesRead;
+					bytesRemaining = FILE_SIZE - totalBytesRead;
 					if(bytesRemaining <= min)
 					{
 						store= new byte[bytesRemaining];
-                                                inStream.read(store,0,bytesRemaining);
-                                                break;
+                                                bytesRead=inStream.read(store,0,bytesRemaining);       
 					}
 					else
                                         {
-                                            int end=max;
+                                            end=max;
                                             if(bytesRemaining > min && bytesRemaining <=max) end=bytesRemaining;
                                             temporary = new byte[end];
-                                            int bytesRead = inStream.read(temporary,0,min);
+                                            bytesRead = inStream.read(temporary,0,min);
                                             for(int i=0;i<end-min;i++)
                                             {
                                              byte[] b=new byte[1];
-                                             bytesRead++;
-                                             inStream.read(b,0,1);
+                                             bytesRead+=inStream.read(b,0,1);
                                              temporary[min+i]=b[0];
                                              int a=(int)b[0];
                                              a=a & 0xFF;
@@ -125,25 +123,19 @@ public class FastCDC {
                                            // System.out.println(temp);
                                               if(temp.equals(BigInteger.valueOf(0)))
                                               {
-                                                count++;
                                                 store= new byte[min+i+1];
                                                 for(int j=0;j<=min+i;j++)    
                                                     store[j]=temporary[j];
                                                 break;
                                               }
                                             }
-                                            if(bytesRead==end)
-                                                {store=temporary;System.out.println(NUMBER_OF_CHUNKS);}
-                                            if(bytesRead > 0 )
-                                            {
-						totalBytesRead += bytesRead ;
-						NUMBER_OF_CHUNKS++ ;
-                                            }   
+                                               
                                         }
-                                        
+                                       totalBytesRead += bytesRead ;
+                                        if(bytesRead==end)
+                                           {store=temporary;}
                                         if(store.length==max)
                                         {
-                                            NUMBER_OF_CHUNKS--;
                                             byte []temp=new byte[normal];
                                             for(int i=0;i<(max/normal);i++)
                                             {
@@ -159,6 +151,7 @@ public class FastCDC {
                                         {
                                             write(store,destination +"/" + PART_NAME);
                                             nameList.add(destination+"/"+PART_NAME);
+                                            NUMBER_OF_CHUNKS++ ;
                                         }
 					//System.out.println("Total Chunks : " + NUMBER_OF_CHUNKS);
 
