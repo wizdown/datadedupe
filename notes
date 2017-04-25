@@ -1,4 +1,4 @@
-1) Pass extra variables  
+1) Pass extra variables
 ansible-playbook release.yml --extra-vars "version=1.23.45 other_variable=foo"
 
 2) scp
@@ -8,7 +8,7 @@ scp your_username@remotehost.edu:foobar.txt /local/dir
 ls -l temp_metadata | grep "^d" | tr -s " " | cut -d' ' -f9
 
 4) Command to generate ssh keys without user input
-ssh-keygen -t rsa -N "passkey" -f "path_of_file_with_its_name" -q 
+ssh-keygen -t rsa -N "passkey" -f path_of_file_with_its_name -q 
 
 5) Command to list all files
 ansible-playbook script/display_all_files.yml
@@ -16,7 +16,7 @@ ansible-playbook script/display_all_files.yml
 6) command to upload file
 ansible-playbook script/upload.yml --extra-vars="inputfile=filename"
 
-7) command to download file 
+7) command to download file
 ansible-playbook script/download.yml --extra-vars="inputfile=filename"
 
 8) command to delete file

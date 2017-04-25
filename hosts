@@ -4,7 +4,7 @@ ip-address
 [webserver:vars]
 ansible_user=root
 ansible_ssh_pass=passkey
-ansible_ssh_private_key_file=key_file
+ansible_ssh_private_key_file=~/.ssh/id_rsa
 ansible_python_interpreter=/usr/local/bin/python
 
 

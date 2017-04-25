@@ -1,0 +1,46 @@
+1) switch to Desktop
+cd ~/Desktop
+
+2)
+git clone https://github.com/wizdown/datadedupe
+
+3) Install these. Before installing check if these aren't already installed.
+sudo apt-get install ansible
+sudo apt-get install sshpass
+sudo apt-get install git
+sudo apt-get install vim
+
+4) generate keys before replacing hosts
+ssh-keygen -t rsa -N "passkey" -f path_of_file_with_its_name -q
+
+5) make sure ~/.ssh dir is created
+move private key to ~/.ssh/id_rsa    (id_rsa is filename not directory name)
+and public key to ~/.ssh/authrised_keys  on server (authrised_keys is filename not directory name)
+
+6) check if you can access the server by executing
+ssh root@server_ip
+
+7) replace hosts file at /etc/ansible/hosts
+and put server ip
+
+8) Execute the following commands
+ssh-agent bash
+ssh-add ~/.ssh/id_rsa
+
+9) Run the following command to ensure everything is working
+ansible all -m ping
+
+
+PROJET COMMANDS
+
+1) Command to list all files
+ansible-playbook script/display_all_files.yml
+
+2) command to upload file
+ansible-playbook script/upload.yml --extra-vars="inputfile=filename"
+
+3) command to download file
+ansible-playbook script/download.yml --extra-vars="inputfile=filename"
+
+4) command to delete file
+ansible-playbook script/delete.yml --extra-vars="inputfile=filename"
