@@ -32,7 +32,6 @@ ssh-add ~/.ssh/id_rsa
 9) Run the following command to ensure everything is working
 ansible all -m ping
 
-
 PROJET COMMANDS
 
 1) Command to list all files
